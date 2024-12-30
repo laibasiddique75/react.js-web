@@ -1,48 +1,100 @@
+import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { FaSun, FaMoon, FaHome, FaPhone } from "react-icons/fa";
+import { IoCard } from "react-icons/io5";
+
+import Card from "./Card";
+import Footer from "./Footer";
+import Hero from "./Hero";
+import Home from "../Home";
+
 const Navbar = () => {
+  const [darkMode, setDarkMode] = useState(false);
+
+  // Apply dark mode class to the body
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark-mode");
+    } else {
+      document.body.classList.remove("dark-mode");
+    }
+  }, [darkMode]);
+
   return (
-    <div>
-      
-      <nav className="navbar navbar-expand-lg bg-body-tertiary">
-  <div className="container-fluid">
-    <a className="navbar-brand" href="#">Navbar</a>
-    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span className="navbar-toggler-icon"></span>
-    </button>
-    <div className="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-        <li className="nav-item">
-          <a className="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link" href="#">Link</a>
-        </li>
-        <li className="nav-item dropdown">
-          <a className="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
-          </a>
-          <ul className="dropdown-menu">
-            <li><a className="dropdown-item" href="#">Action</a></li>
-            <li><a className="dropdown-item" href="#">Another action</a></li>
-            <li><hr className="dropdown-divider"/></li>
-            <li><a className="dropdown-item" href="#">Something else here</a></li>
-          </ul>
-        </li>
-        <li className="nav-item">
-          <a className="nav-link disabled" aria-disabled="true">Disabled</a>
-        </li>
-      </ul>
-      <form className="d-flex" role="search">
-        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-        <button className="btn btn-outline-success" type="submit">Search</button>
-      </form>
-    </div>
-  </div>
-</nav>
+    <Router>
+      <div>
+        {/* Navbar */}
+        <nav className={`navbar navbar-expand-lg ${darkMode ? "bg-dark" : "bg-light"} shadow`}>
+          <div className="container-fluid">
+            {/* Brand */}
+            <Link className="navbar-brand text-primary" to="/">
+              Laiba
+            </Link>
 
+            {/* Toggler for mobile */}
+            <button
+              className="navbar-toggler"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#navbarNav"
+              aria-controls="navbarNav"
+              aria-expanded="false"
+              aria-label="Toggle navigation"
+            >
+              <span className="navbar-toggler-icon"></span>
+            </button>
 
+            {/* Navbar Links */}
+            <div className="collapse navbar-collapse" id="navbarNav">
+              <ul className="navbar-nav me-auto mb-2 mb-lg-0">
+                <li className="nav-item">
+                  <Link className={`nav-link ${darkMode ? "text-light" : "text-dark"}`} to="/">
+                    <FaHome /> Home
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className={`nav-link ${darkMode ? "text-light" : "text-dark"}`} to="/hero">
+                    <FaHome /> Hero
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className={`nav-link ${darkMode ? "text-light" : "text-dark"}`} to="/card">
+                    <IoCard /> Card
+                  </Link>
+                </li>
+                <li className="nav-item">
+                  <Link className={`nav-link ${darkMode ? "text-light" : "text-dark"}`} to="/footer">
+                    <FaPhone /> Footer
+                  </Link>
+                </li>
+              </ul>
 
-    </div>
-  )
-}
+              {/* Dark/Light Mode Toggle Icon */}
+              <div className="d-flex align-items-center">
+                <button
+                  className="btn btn-outline-secondary rounded-circle"
+                  onClick={() => setDarkMode(!darkMode)}
+                >
+                  {darkMode ? <FaSun size={20} /> : <FaMoon size={20} />}
+                </button>
+              </div>
+            </div>
+          </div>
+        </nav>
 
-export default Navbar
+        {/* Content Area */}
+        <div className={`content-area ${darkMode ? "bg-dark text-light" : "bg-light text-dark"}`}>
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="/hero" element={<Hero />} />
+            <Route path="/card" element={<Card />} />
+            <Route path="/footer" element={<Footer />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
+  );
+};
+
+export default Navbar;
+
